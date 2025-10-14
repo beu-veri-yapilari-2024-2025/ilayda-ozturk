@@ -1,0 +1,7 @@
+C:\Users\ilydo\OneDrive\Masaüstü\data structures\homework3\homework3\obj\Debug\homework3.csproj.AssemblyReference.cache
+C:\Users\ilydo\OneDrive\Masaüstü\data structures\homework3\homework3\obj\Debug\homework3.csproj.CoreCompileInputs.cache
+C:\Users\ilydo\OneDrive\Masaüstü\data structures\homework3\homework3\bin\Debug\homework3.exe.config
+C:\Users\ilydo\OneDrive\Masaüstü\data structures\homework3\homework3\bin\Debug\homework3.exe
+C:\Users\ilydo\OneDrive\Masaüstü\data structures\homework3\homework3\bin\Debug\homework3.pdb
+C:\Users\ilydo\OneDrive\Masaüstü\data structures\homework3\homework3\obj\Debug\homework3.exe
+C:\Users\ilydo\OneDrive\Masaüstü\data structures\homework3\homework3\obj\Debug\homework3.pdb

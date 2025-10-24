@@ -1,0 +1,10 @@
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\bin\Debug\linkedlist2.odev.exe.config
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\bin\Debug\linkedlist2.odev.exe
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\bin\Debug\linkedlist2.odev.pdb
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\obj\Debug\linkedlist2.odev.csproj.AssemblyReference.cache
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\obj\Debug\linkedlist2.odev.Form1.resources
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\obj\Debug\linkedlist2.odev.Properties.Resources.resources
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\obj\Debug\linkedlist2.odev.csproj.GenerateResource.cache
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\obj\Debug\linkedlist2.odev.csproj.CoreCompileInputs.cache
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\obj\Debug\linkedlist2.odev.exe
+C:\Users\ilydo\source\repos\linkedlist2.odev\linkedlist2.odev\obj\Debug\linkedlist2.odev.pdb

@@ -1,0 +1,124 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|c:\\users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|solutionrelative:linkedlist2.odev\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|solutionrelative:linkedlist2.odev\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\ogrencidersyonetimi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|solutionrelative:linkedlist2.odev\\ogrencidersyonetimi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\dersnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|solutionrelative:linkedlist2.odev\\dersnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\dersheadnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|solutionrelative:linkedlist2.odev\\dersheadnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\ogrenciheadnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49487F53-C5B0-4C28-8175-525D9C0CF983}|linkedlist2.odev\\linkedlist2.odev.csproj|solutionrelative:linkedlist2.odev\\ogrenciheadnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\Form1.cs",
+              "RelativeDocumentMoniker": "linkedlist2.odev\\Form1.cs",
+              "ToolTip": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\Form1.cs",
+              "RelativeToolTip": "linkedlist2.odev\\Form1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJ4AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T15:54:43.221Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\Form1.cs",
+              "RelativeDocumentMoniker": "linkedlist2.odev\\Form1.cs",
+              "ToolTip": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\Form1.cs [Design]*",
+              "RelativeToolTip": "linkedlist2.odev\\Form1.cs [Design]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T15:52:35.769Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OgrenciDersYonetimi.cs",
+              "DocumentMoniker": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\OgrenciDersYonetimi.cs",
+              "RelativeDocumentMoniker": "linkedlist2.odev\\OgrenciDersYonetimi.cs",
+              "ToolTip": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\OgrenciDersYonetimi.cs*",
+              "RelativeToolTip": "linkedlist2.odev\\OgrenciDersYonetimi.cs*",
+              "ViewState": "AgIAALMAAAAAAAAAAAAiwNsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T15:54:23.723Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DersHeadNode.cs",
+              "DocumentMoniker": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\DersHeadNode.cs",
+              "RelativeDocumentMoniker": "linkedlist2.odev\\DersHeadNode.cs",
+              "ToolTip": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\DersHeadNode.cs*",
+              "RelativeToolTip": "linkedlist2.odev\\DersHeadNode.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T15:54:04.551Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "OgrenciHeadNode.cs",
+              "DocumentMoniker": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\OgrenciHeadNode.cs",
+              "RelativeDocumentMoniker": "linkedlist2.odev\\OgrenciHeadNode.cs",
+              "ToolTip": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\OgrenciHeadNode.cs*",
+              "RelativeToolTip": "linkedlist2.odev\\OgrenciHeadNode.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T15:53:51.971Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DersNode.cs",
+              "DocumentMoniker": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\DersNode.cs",
+              "RelativeDocumentMoniker": "linkedlist2.odev\\DersNode.cs",
+              "ToolTip": "C:\\Users\\ilydo\\source\\repos\\linkedlist2.odev\\linkedlist2.odev\\DersNode.cs*",
+              "RelativeToolTip": "linkedlist2.odev\\DersNode.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-24T15:53:37.111Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

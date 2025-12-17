@@ -1,456 +1,363 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-// Öğrenci Bilgilerini Tutan Sınıf (Class)
-public class Ogrenci
+﻿class Node
 {
-    public string Ad { get; set; }
-    public string Soyad { get; set; }
-    public int Numara { get; set; }
+    public int Value;       // Düğümün taşıdığı sayısal değer
+    public Node Left, Right; // Sol ve Sağ alt düğümlere giden bağlantılar (pointerlar)
+    public int Height;      // Düğümün yüksekliği (Denge hesabı için kritik önem taşır)
 
-    // Yapıcı Metod (Constructor)
-    public Ogrenci(string ad, string soyad, int numara)
+    public Node(int value)
     {
-        Ad = ad;
-        Soyad = soyad;
-        Numara = numara;
-    }
-
-    public void BilgileriGoster()
-    {
-        Console.WriteLine($"  Numara: {Numara}, Ad: {Ad}, Soyad: {Soyad}");
+        Value = value;
+        Left = Right = null; // Yeni düğümün çocukları henüz yoktur
+        Height = 1;          // Yeni eklenen düğümün yüksekliği başlangıçta 1'dir
     }
 }
 
-//  Bağlı Listenin Düğümü (Node) Sınıfı
-public class Node
+class AVLTree
 {
-    public Ogrenci Ogrenci { get; set; } // Veri kısmı
-    public Node Next { get; set; }      // Sonraki düğümü gösteren referans
+    private Node root; // Ağacın başlangıç noktası (Kök düğüm)
 
-    // Yapıcı Metod (Constructor)
-    public Node(Ogrenci ogrenci)
+    public AVLTree()
     {
-        Ogrenci = ogrenci;
-        Next = null;
-    }
-}
-
-//  Bağlı Liste Sınıfı
-public class OgrenciLinkedList
-{
-    private Node head; // Listenin başını gösteren referans
-
-    // Yapıcı Metod (Constructor)
-    public OgrenciLinkedList()
-    {
-        head = null;
+        root = null; // Ağaç ilk başta boştur
     }
 
-    // Yardımcı Fonksiyon: Öğrenci Numarasına Göre Arama (Node döndürür)
-    private Node Arama(int numara)
+    // --- EKLEME İŞLEMİ (INSERT) ---
+    // Kullanıcının çağırdığı ana ekleme metodu
+    public void Insert(int value)
     {
-        Node temp = head;
-        while (temp != null)
+        root = InsertRec(root, value);
+    }
+
+    // Özyinelemeli (Recursive) olarak asıl eklemeyi yapan metot
+    private Node InsertRec(Node node, int value)
+    {
+        // 1. ADIM: Standart BST (Binary Search Tree) Ekleme İşlemi
+        if (node == null)
+            return new Node(value); // Ağaç boşsa veya yaprağa ulaşıldıysa yeni düğümü oluştur
+
+        if (value < node.Value)
+            node.Left = InsertRec(node.Left, value); // Değer küçükse sola git
+        else if (value > node.Value)
+            node.Right = InsertRec(node.Right, value); // Değer büyükse sağa git
+        else
+            return node; // Aynı değerler ağaca eklenmez (Duplicate yasak)
+
+        // 2. ADIM: Yükseklik Güncelleme
+        // Ekleme yapılan yoldaki her düğümün yüksekliğini güncelliyoruz.
+        node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
+
+        // 3. ADIM: Denge Kontrolü (Balance Factor)
+        // Sol ve Sağ yükseklik farkına bakılır.
+        int balance = GetBalance(node);
+
+        // 4. ADIM: Denge Bozulmuşsa Rotasyon (Döndürme) İşlemleri
+
+        // Durum 1: Sol taraf çok ağır ve eklenen değer solun solunda (Left-Left Case) -> Sağ Rotasyon
+        if (balance > 1 && value < node.Left.Value)
+            return RightRotate(node);
+
+        // Durum 2: Sağ taraf çok ağır ve eklenen değer sağın sağında (Right-Right Case) -> Sol Rotasyon
+        if (balance < -1 && value > node.Right.Value)
+            return LeftRotate(node);
+
+        // Durum 3: Sol taraf ağır ama eklenen değer solun sağında (Left-Right Case) -> Önce Sol, Sonra Sağ Rotasyon
+        if (balance > 1 && value > node.Left.Value)
         {
-            if (temp.Ogrenci.Numara == numara)
+            node.Left = LeftRotate(node.Left);
+            return RightRotate(node);
+        }
+
+        // Durum 4: Sağ taraf ağır ama eklenen değer sağın solunda (Right-Left Case) -> Önce Sağ, Sonra Sol Rotasyon
+        if (balance < -1 && value < node.Right.Value)
+        {
+            node.Right = RightRotate(node.Right);
+            return LeftRotate(node);
+        }
+
+        // Denge bozulmadıysa düğümü olduğu gibi döndür
+        return node;
+    }
+
+    // --- ROTASYON METOTLARI ---
+
+    // Sağ Rotasyon (Right Rotate): Sol taraf ağırlaştığında kullanılır
+    private Node RightRotate(Node y)
+    {
+        Node x = y.Left;
+        Node T2 = x.Right;
+
+        // Döndürme işlemi (Pointerları değiştirme)
+        x.Right = y;
+        y.Left = T2;
+
+        // Yükseklikleri güncelle (Önce alt seviye olan y, sonra üst seviye olan x)
+        y.Height = Math.Max(GetHeight(y.Left), GetHeight(y.Right)) + 1;
+        x.Height = Math.Max(GetHeight(x.Left), GetHeight(x.Right)) + 1;
+
+        return x; // Yeni kök x olur
+    }
+
+    // Sol Rotasyon (Left Rotate): Sağ taraf ağırlaştığında kullanılır
+    private Node LeftRotate(Node x)
+    {
+        Node y = x.Right;
+        Node T2 = y.Left;
+
+        // Döndürme işlemi
+        y.Left = x;
+        x.Right = T2;
+
+        // Yükseklikleri güncelle
+        x.Height = Math.Max(GetHeight(x.Left), GetHeight(x.Right)) + 1;
+        y.Height = Math.Max(GetHeight(y.Left), GetHeight(y.Right)) + 1;
+
+        return y; // Yeni kök y olur
+    }
+
+    // Yardımcı Metot: Bir düğümün yüksekliğini güvenli şekilde alır (Null kontrolü yapar)
+    private int GetHeight(Node node)
+    {
+        return node == null ? 0 : node.Height;
+    }
+
+    // Yardımcı Metot: Denge Faktörünü hesaplar (Sol Yükseklik - Sağ Yükseklik)
+    private int GetBalance(Node node)
+    {
+        return node == null ? 0 : GetHeight(node.Left) - GetHeight(node.Right);
+    }
+
+    // --- ARAMA İŞLEMİ (SEARCH) ---
+    public bool Search(int value)
+    {
+        return SearchRec(root, value);
+    }
+
+    private bool SearchRec(Node node, int value)
+    {
+        if (node == null)
+            return false; // Ağaç bitti, değer bulunamadı
+
+        if (value < node.Value)
+            return SearchRec(node.Left, value); // Aranan değer küçükse sola bak
+        else if (value > node.Value)
+            return SearchRec(node.Right, value); // Aranan değer büyükse sağa bak
+        else
+            return true; // Değer bulundu
+    }
+
+    // --- SİLME İŞLEMİ (DELETE) ---
+    public void Delete(int value)
+    {
+        root = DeleteRec(root, value);
+    }
+
+    private Node DeleteRec(Node root, int value)
+    {
+        // 1. ADIM: Standart BST Silme İşlemi
+        if (root == null)
+            return root;
+
+        if (value < root.Value)
+            root.Left = DeleteRec(root.Left, value);
+        else if (value > root.Value)
+            root.Right = DeleteRec(root.Right, value);
+        else
+        {
+            // Silinecek düğüm bulundu
+
+            // Durum A: Tek çocuğu var veya hiç çocuğu yok
+            if (root.Left == null || root.Right == null)
             {
-                return temp; // Bulundu
+                Node temp = root.Left != null ? root.Left : root.Right;
+
+                if (temp == null) // Hiç çocuğu yok
+                {
+                    temp = root;
+                    root = null;
+                }
+                else // Tek çocuğu var
+                    root = temp; // Çocuğu silinen düğümün yerine taşı
             }
-            temp = temp.Next;
-        }
-        return null; // Bulunamadı
-    }
-
-    // Yardımcı Fonksiyon: Öğrenci Numarasına Göre Bir Önceki Node'u Arama
-    private Node OncekiNodeArama(int numara)
-    {
-        if (head == null || head.Ogrenci.Numara == numara)
-        {
-            return null; // Liste boş veya aranan head
-        }
-
-        Node current = head;
-        while (current.Next != null && current.Next.Ogrenci.Numara != numara)
-        {
-            current = current.Next;
-        }
-
-        return current.Next == null ? null : current; // Bulunursa önceki node'u döndür
-    }
-
-    // EKLEME İŞLEMLERİ
-    
-
-    //  Başına Ekleme
-    public void BasaEkle(Ogrenci yeniOgrenci)
-    {
-        Node newNode = new Node(yeniOgrenci);
-        newNode.Next = head;
-        head = newNode;
-        Console.WriteLine($"--> Başına eklendi: {yeniOgrenci.Ad}");
-    }
-
-    // Sonuna Ekleme
-    public void SonaEkle(Ogrenci yeniOgrenci)
-    {
-        Node newNode = new Node(yeniOgrenci);
-        if (head == null)
-        {
-            head = newNode;
-            Console.WriteLine($"--> Listeye ilk eleman olarak eklendi: {yeniOgrenci.Ad}");
-            return;
-        }
-
-        Node temp = head;
-        while (temp.Next != null)
-        {
-            temp = temp.Next;
-        }
-        temp.Next = newNode;
-        Console.WriteLine($"--> Sonuna eklendi: {yeniOgrenci.Ad}");
-    }
-
-    //  İstenen Değerden (Numaradan) Sonrasına Ekleme
-    public void AradanSonrasinaEkle(int hedefNumara, Ogrenci yeniOgrenci)
-    {
-        Node hedefNode = Arama(hedefNumara);
-        if (hedefNode == null)
-        {
-            Console.WriteLine($"HATA: {hedefNumara} numaralı öğrenci bulunamadı, ekleme yapılamadı.");
-            return;
-        }
-
-        Node newNode = new Node(yeniOgrenci);
-        newNode.Next = hedefNode.Next;
-        hedefNode.Next = newNode;
-        Console.WriteLine($"--> {hedefNumara} numaralı öğrenciden SONRA eklendi: {yeniOgrenci.Ad}");
-    }
-
-    //  İstenen Değerden (Numaradan) Öncesine Ekleme
-    public void AradanOncesineEkle(int hedefNumara, Ogrenci yeniOgrenci)
-    {
-        if (head == null)
-        {
-            Console.WriteLine($"HATA: Liste boş, {hedefNumara} numaradan önce ekleme yapılamadı.");
-            return;
-        }
-
-        if (head.Ogrenci.Numara == hedefNumara)
-        {
-            BasaEkle(yeniOgrenci); // Baş düğümden önce ekle
-            return;
-        }
-
-        Node oncekiNode = OncekiNodeArama(hedefNumara);
-
-        if (oncekiNode == null)
-        {
-            Console.WriteLine($"HATA: {hedefNumara} numaralı öğrenci bulunamadı, ekleme yapılamadı.");
-        }
-        else
-        {
-            Node newNode = new Node(yeniOgrenci);
-            newNode.Next = oncekiNode.Next;
-            oncekiNode.Next = newNode;
-            Console.WriteLine($"--> {hedefNumara} numaralı öğrenciden ÖNCE eklendi: {yeniOgrenci.Ad}");
-        }
-    }
-
-   
-    // SİLME İŞLEMLERİ
-   
-
-    //  Baştan Silme
-    public bool BastanSil()
-    {
-        if (head == null)
-        {
-            Console.WriteLine("HATA: Liste boş, silme yapılamadı.");
-            return false;
-        }
-        string silinenAd = head.Ogrenci.Ad;
-        head = head.Next; // C# garbage collector (çöp toplayıcısı) eski head'i temizleyecektir
-        Console.WriteLine($"--> Baştaki öğrenci silindi: {silinenAd}");
-        return true;
-    }
-
-    //  Sondan Silme
-    public bool SondanSil()
-    {
-        if (head == null)
-        {
-            Console.WriteLine("HATA: Liste boş, silme yapılamadı.");
-            return false;
-        }
-        if (head.Next == null) // Tek eleman varsa
-        {
-            string silinenAd = head.Ogrenci.Ad;
-            head = null;
-            Console.WriteLine($"--> Tek elemanlı listenin sonu silindi: {silinenAd}");
-            return true;
-        }
-
-        Node temp = head;
-        while (temp.Next.Next != null)
-        {
-            temp = temp.Next;
-        }
-        string silinenAdSon = temp.Next.Ogrenci.Ad;
-        temp.Next = null; // Son düğümün referansını kes
-        Console.WriteLine($"--> Sondaki öğrenci silindi: {silinenAdSon}");
-        return true;
-    }
-
-    //  İstenen Değeri (Numarayı) Silme
-    public bool DegerSil(int numara)
-    {
-        if (head == null) return false;
-
-        if (head.Ogrenci.Numara == numara)
-        {
-            return BastanSil(); // Baş düğüm silinecekse, BastanSil fonksiyonunu kullan
-        }
-
-        Node oncekiNode = OncekiNodeArama(numara);
-
-        if (oncekiNode == null)
-        {
-            Console.WriteLine($"HATA: {numara} numaralı öğrenci bulunamadı, silme yapılamadı.");
-            return false;
-        }
-
-        Node silinecekNode = oncekiNode.Next;
-        oncekiNode.Next = silinecekNode.Next;
-        Console.WriteLine($"--> {numara} numaralı öğrenci silindi: {silinecekNode.Ogrenci.Ad}");
-
-        // Silinecek düğümün referansı kesildiği için, C# çöp toplayıcısı onu temizleyecektir.
-        return true;
-    }
-
-    // İstenen Değerden (Numaradan) Öncesini Silme
-    public bool OncesiniSil(int hedefNumara)
-    {
-        if (head == null || head.Ogrenci.Numara == hedefNumara)
-        {
-            Console.WriteLine("HATA: Silinecek önceki eleman yok veya liste boş/hedef ilk eleman.");
-            return false;
-        }
-
-        // Hedef ikinci düğüm ise, baştaki düğümü sil
-        if (head.Next != null && head.Next.Ogrenci.Numara == hedefNumara)
-        {
-            return BastanSil();
-        }
-
-        Node current = head;
-        // current.Next.Next aradığımız düğüm (hedef) olmalı.
-        // current.Next ise silinecek düğüm (hedef'in önündeki) olmalı.
-        while (current.Next != null && current.Next.Next != null && current.Next.Next.Ogrenci.Numara != hedefNumara)
-        {
-            current = current.Next;
-        }
-
-        if (current.Next == null || current.Next.Next == null)
-        {
-            Console.WriteLine($"HATA: {hedefNumara} numaralı öğrencinin öncesi bulunamadı (ilk 2 elemandan biri değil).");
-            return false;
-        }
-
-        // Silinecek düğüm: current.Next
-        string silinenAd = current.Next.Ogrenci.Ad;
-        current.Next = current.Next.Next;
-        Console.WriteLine($"--> {hedefNumara} numaralı öğrencinin ÖNCESİ silindi: {silinenAd}");
-        return true;
-    }
-
-    // İstenen Değerden (Numaradan) Sonrasını Silme
-    public bool SonrasiniSil(int hedefNumara)
-    {
-        Node hedefNode = Arama(hedefNumara);
-        if (hedefNode == null)
-        {
-            Console.WriteLine($"HATA: {hedefNumara} numaralı öğrenci bulunamadı.");
-            return false;
-        }
-
-        if (hedefNode.Next == null)
-        {
-            Console.WriteLine($"HATA: {hedefNumara} numaralı öğrenciden sonra silinecek öğrenci yok (Liste sonu).");
-            return false;
-        }
-
-        Node silinecekNode = hedefNode.Next;
-        hedefNode.Next = silinecekNode.Next;
-        Console.WriteLine($"--> {hedefNumara} numaralı öğrenciden SONRASI silindi: {silinecekNode.Ogrenci.Ad}");
-        return true;
-    }
-
-   
-    // DİĞER İŞLEMLER
-   
-
-    //  Listeleme (Gezinme/Traversal)
-    public void Listele()
-    {
-        if (head == null)
-        {
-            Console.WriteLine("Liste boş.");
-            return;
-        }
-        Node temp = head;
-        int sira = 1;
-        Console.WriteLine("\n--- OGRENCI LISTESI ---");
-        while (temp != null)
-        {
-            Console.Write($"{sira++}. ");
-            temp.Ogrenci.BilgileriGoster();
-            temp = temp.Next;
-        }
-        Console.WriteLine("-----------------------");
-    }
-
-    //  Arama (Numaraya göre arama, sonucu yazdırma)
-    public void AramaYazdir(int numara)
-    {
-        Node bulunan = Arama(numara);
-        if (bulunan != null)
-        {
-            Console.Write($"{numara} numaralı öğrenci bulundu: ");
-            bulunan.Ogrenci.BilgileriGoster();
-        }
-        else
-        {
-            Console.WriteLine($"HATA: {numara} numaralı öğrenci bulunamadı.");
-        }
-    }
-
-    //  Kullanıcıdan Değer Alarak Ekleme (Menü)
-    public void KullanicidanDegerAlarakEkle()
-    {
-        string ad, soyad;
-        int numara;
-        int secim;
-        int hedefNumara = -1;
-
-        Console.WriteLine("\n--- YENI OGRENCI EKLEME ---");
-        Console.Write("Ad: ");
-        ad = Console.ReadLine();
-        Console.Write("Soyad: ");
-        soyad = Console.ReadLine();
-
-        while (true)
-        {
-            Console.Write("Numara: ");
-            if (int.TryParse(Console.ReadLine(), out numara))
-                break;
-            Console.WriteLine("Geçersiz numara formatı. Lütfen tekrar deneyin.");
-        }
-
-        Ogrenci yeniOgrenci = new Ogrenci(ad, soyad, numara);
-
-        Console.WriteLine("\nNereye eklemek istersiniz?");
-        Console.WriteLine("1. Listenin basına");
-        Console.WriteLine("2. Listenin sonuna");
-        Console.WriteLine("3. Başka bir öğrenciden ÖNCE");
-        Console.WriteLine("4. Başka bir öğrenciden SONRA");
-        Console.Write("Seçiminiz (1-4): ");
-
-        if (int.TryParse(Console.ReadLine(), out secim))
-        {
-            switch (secim)
+            else
             {
-                case 1:
-                    BasaEkle(yeniOgrenci);
+                // Durum B: İki çocuğu var
+                // Sağ alt ağacın en küçüğünü (In-order Successor) bul
+                Node temp = GetMinValueNode(root.Right);
+
+                // O değeri silinecek düğüme kopyala
+                root.Value = temp.Value;
+
+                // Sağ taraftan o kopyalanan değeri sil
+                root.Right = DeleteRec(root.Right, temp.Value);
+            }
+        }
+
+        if (root == null)
+            return root;
+
+        // 2. ADIM: Yükseklik Güncelleme
+        root.Height = Math.Max(GetHeight(root.Left), GetHeight(root.Right)) + 1;
+
+        // 3. ADIM: Denge Kontrolü
+        int balance = GetBalance(root);
+
+        // 4. ADIM: Denge Bozuksa Rotasyonlar (Silme sonrası dengeyi tekrar sağla)
+
+        // Sol taraf ağır
+        if (balance > 1 && GetBalance(root.Left) >= 0)
+            return RightRotate(root);
+
+        // Sol taraf ağır ama solun sağı daha yüklü (Zikzak)
+        if (balance > 1 && GetBalance(root.Left) < 0)
+        {
+            root.Left = LeftRotate(root.Left);
+            return RightRotate(root);
+        }
+
+        // Sağ taraf ağır
+        if (balance < -1 && GetBalance(root.Right) <= 0)
+            return LeftRotate(root);
+
+        // Sağ taraf ağır ama sağın solu daha yüklü (Zikzak)
+        if (balance < -1 && GetBalance(root.Right) > 0)
+        {
+            root.Right = RightRotate(root.Right);
+            return LeftRotate(root);
+        }
+
+        return root;
+    }
+
+    // Bir ağaçtaki en küçük değeri bulan yardımcı metot (Silme işleminde kullanılır)
+    private Node GetMinValueNode(Node node)
+    {
+        Node current = node;
+        while (current.Left != null)
+            current = current.Left; // En sola kadar git
+
+        return current;
+    }
+
+    // --- YAZDIRMA (LISTELEME) ---
+    public void PrintTree()
+    {
+        PrintTreeRec(root);
+        Console.WriteLine();
+    }
+
+    // In-order Traversal (Sol - Kök - Sağ): Küçükten büyüğe sıralı yazdırır
+    private void PrintTreeRec(Node node)
+    {
+        if (node != null)
+        {
+            PrintTreeRec(node.Left);
+            Console.Write(node.Value + " ");
+            PrintTreeRec(node.Right);
+        }
+    }
+
+    // Bu metot dışarıdan tüm ağacı tekrar dengelemek istersek kullanılır (Opsiyonel)
+    public void BalanceTree()
+    {
+        root = BalanceRec(root);
+    }
+
+    private Node BalanceRec(Node node)
+    {
+        if (node == null)
+            return null;
+
+        // Alt ağaçları özyinelemeli dengele
+        node.Left = BalanceRec(node.Left);
+        node.Right = BalanceRec(node.Right);
+
+        // Yükseklik güncelle
+        node.Height = Math.Max(GetHeight(node.Left), GetHeight(node.Right)) + 1;
+
+        // Denge faktörünü kontrol et ve rotasyon yap
+        int balance = GetBalance(node);
+
+        if (balance > 1)
+        {
+            if (GetBalance(node.Left) < 0)
+                node.Left = LeftRotate(node.Left);
+            return RightRotate(node);
+        }
+
+        if (balance < -1)
+        {
+            if (GetBalance(node.Right) > 0)
+                node.Right = RightRotate(node.Right);
+            return LeftRotate(node);
+        }
+
+        return node;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        AVLTree tree = new AVLTree();
+        bool continueRunning = true;
+
+        // Kullanıcı menüsü döngüsü
+        while (continueRunning)
+        {
+            Console.Clear(); // Ekranı temizle
+            Console.WriteLine("1. Ekleme");
+            Console.WriteLine("2. Silme");
+            Console.WriteLine("3. Arama");
+            Console.WriteLine("4. Listele");
+            Console.WriteLine("5. Çıkış");
+            Console.Write("Seçiminizi yapın: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    Console.Write("Eklenecek değeri girin: ");
+                    int insertValue = int.Parse(Console.ReadLine());
+                    tree.Insert(insertValue); // Ağaca ekle
+                    Console.WriteLine($"Değer {insertValue} ağaçta eklendi.");
+                    tree.PrintTree(); // Güncel hali yazdır
                     break;
-                case 2:
-                    SonaEkle(yeniOgrenci);
+
+                case "2":
+                    Console.Write("Silinecek değeri girin: ");
+                    int deleteValue = int.Parse(Console.ReadLine());
+                    tree.Delete(deleteValue); // Ağaçtan sil
+                    Console.WriteLine($"Değer {deleteValue} ağaçtan silindi.");
+                    tree.PrintTree();
                     break;
-                case 3:
-                    Console.Write("Hangi öğrenci numarasından ÖNCE eklenecek? ");
-                    if (int.TryParse(Console.ReadLine(), out hedefNumara))
-                        AradanOncesineEkle(hedefNumara, yeniOgrenci);
+
+                case "3":
+                    Console.Write("Aranacak değeri girin: ");
+                    int searchValue = int.Parse(Console.ReadLine());
+                    bool found = tree.Search(searchValue); // Ağaçta ara
+                    if (found)
+                        Console.WriteLine($"Değer {searchValue} ağaçta bulundu.");
                     else
-                        Console.WriteLine("Geçersiz numara girişi.");
+                        Console.WriteLine($"Değer {searchValue} ağaçta bulunamadı.");
                     break;
-                case 4:
-                    Console.Write("Hangi öğrenci numarasından SONRA eklenecek? ");
-                    if (int.TryParse(Console.ReadLine(), out hedefNumara))
-                        AradanSonrasinaEkle(hedefNumara, yeniOgrenci);
-                    else
-                        Console.WriteLine("Geçersiz numara girişi.");
+
+                case "4":
+                    Console.WriteLine("Ağaç: ");
+                    tree.PrintTree(); // Sıralı listele
                     break;
+
+                case "5":
+                    continueRunning = false; // Döngüyü kır ve çık
+                    break;
+
                 default:
-                    Console.WriteLine("Geçersiz seçim! Ekleme yapılamadı.");
+                    Console.WriteLine("Geçersiz seçim. Tekrar deneyin.");
                     break;
             }
+
+            Console.WriteLine("Devam etmek için bir tuşa basın...");
+            Console.ReadKey();
         }
-        else
-        {
-            Console.WriteLine("Geçersiz seçim formatı! Ekleme yapılamadı.");
-        }
-    }
-}
-
-// Ana Program (Main metodu bir sınıf içinde olmalıdır)
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        OgrenciLinkedList list = new OgrenciLinkedList();
-
-        // Başlangıç verileri
-        Ogrenci ogr1 = new Ogrenci("İlayda", "Öztürk", 501);
-        Ogrenci ogr2 = new Ogrenci("Kenan", "Kaya", 502);
-        Ogrenci ogr3 = new Ogrenci("Ayse", "Demir", 503);
-        Ogrenci ogr4 = new Ogrenci("Fatma", "Celiko", 504);
-
-        // Listeye Ekleme İşlemleri
-        list.SonaEkle(ogr1);    
-        list.SonaEkle(ogr3);    
-        list.BasaEkle(ogr2);    
-        list.AradanSonrasinaEkle(101, ogr4); 
-
-        list.Listele(); // Mevcut listeyi gör
-
-        // Arama İşlemi
-        list.AramaYazdir(104);
-        list.AramaYazdir(999);
-
-        // Öncesine Ekleme
-        Ogrenci ogr5 = new Ogrenci("Zeynep", "Akin", 105);
-        list.AradanOncesineEkle(103, ogr5); 
-        list.Listele();
-
-        // Silme İşlemleri
-        Console.WriteLine("\n--- SILME ISLEMLERI ---");
-        list.BastanSil(); 
-        list.SondanSil();
-        list.DegerSil(104); 
-        list.Listele(); 
-
-        // Aradan sonrasini silme
-        list.SonrasiniSil(101);
-        list.Listele(); 
-
-        // Yeni eleman ekle
-        Ogrenci ogr6 = new Ogrenci("Can", "Oz", 106);
-        list.SonaEkle(ogr6); 
-        Ogrenci ogr7 = new Ogrenci("Deniz", "Ak", 107);
-        list.SonaEkle(ogr7); 
-        list.Listele();
-
-        // Aradan oncesini silme 
-        list.OncesiniSil(106); 
-        list.Listele();
-
-        // Kullanıcıdan Değer Alarak Ekleme Fonksiyonunu Çağırma
-        list.KullanicidanDegerAlarakEkle();
-
-        list.Listele();
-
-        Console.WriteLine("\nProgram sonlandırmak için bir tuşa basın...");
-        Console.ReadKey();
     }
 }
